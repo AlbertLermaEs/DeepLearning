@@ -1,0 +1,8 @@
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body)}
+a{color:var(--text-link);text-decoration:underline;text-decoration-color:var(--ink-300);text-underline-offset:3px;text-decoration-thickness:1px;transition:color var(--dur-fast) var(--ease-out),text-decoration-color var(--dur-fast) var(--ease-out)}
+a:hover{color:var(--text-link-hover);text-decoration-color:currentColor}
+::selection{background:var(--sky-200)}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+code,kbd,samp{font-family:var(--font-mono);font-size:.88em}
+.katex{font-size:1.06em}

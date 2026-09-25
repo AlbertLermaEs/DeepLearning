@@ -1,0 +1,56 @@
+/* Marginalia — color tokens. Values sampled from the distill.pub reference figures in uploads/. */
+:root{
+/* Paper + ink (neutral ramp) */
+--paper:#ffffff;
+--ink-950:#111111;--ink-900:#222222;--ink-800:#333333;--ink-700:#4a4a4a;--ink-600:#666666;--ink-500:#808080;--ink-400:#a6a6a6;--ink-300:#c8c8c8;--ink-200:#e2e2e2;--ink-100:#efefef;--ink-50:#f7f7f7;
+
+/* Diagram hues — each has strong / stroke / fill / tint steps */
+--coral-600:#c9533f;--coral-500:#e8716d;--coral-400:#e3907e;--coral-200:#f4d3cb;--coral-100:#fbe9e4;
+--sky-600:#2f6fad;--sky-500:#6fa8dc;--sky-400:#7ab8e2;--sky-200:#cde3f3;--sky-100:#e9f3fa;
+--cyan-400:#6ccde0;--cyan-200:#b8ecf5;--cyan-100:#e3f7fb;
+--iris-600:#7b57b5;--iris-400:#a58fd6;--iris-200:#e2daf3;--iris-100:#f0eef6;
+--indigo-500:#7f93e6;--indigo-300:#b9c5f3;--indigo-100:#eef0fb;
+--magenta-500:#ff66c4;--magenta-300:#ff9ad6;
+--amber-600:#b57b00;--amber-500:#ffac00;--amber-200:#ffe1a0;
+
+/* Sequential ramp (YlGnBu, as in the convergence-rate heatmap) + overflow */
+--seq-0:#ffffd9;--seq-1:#c7e9b4;--seq-2:#7fcdbb;--seq-3:#41b6c4;--seq-4:#1d91c0;--seq-5:#225ea8;--seq-6:#253494;--seq-over:#000000;
+
+/* Sequential ramp B — warm (OrRd, as in the damping small-multiples) */
+--seq-warm-0:#fff7ec;--seq-warm-1:#fee8c8;--seq-warm-2:#fdd49e;--seq-warm-3:#fdbb84;--seq-warm-4:#fc8d59;--seq-warm-5:#e34a33;--seq-warm-6:#b30000;--seq-warm-over:#3a0a05;
+
+/* Categorical (feature-map legend order) */
+--cat-1:#f28b7d;--cat-2:#ef7aa0;--cat-3:#b77bd6;--cat-4:#8e7cc3;--cat-5:#7f8fcf;--cat-6:#6fa8dc;--cat-7:#6ec6e6;--cat-8:#6cc5b0;--cat-9:#88c78b;--cat-10:#bcd67a;--cat-11:#f6d860;--cat-12:#f7a55a;--cat-13:#a1887f;--cat-14:#b0b0b0;
+
+/* ——— Semantic aliases ——— */
+--text-strong:var(--ink-900);
+--text-body:var(--ink-800);
+--text-muted:var(--ink-600);
+--text-subtle:var(--ink-500);
+--text-inverse:var(--paper);
+--text-link:var(--ink-900);
+--text-link-hover:var(--sky-600);
+
+--surface-page:var(--paper);
+--surface-well:var(--ink-50);
+--surface-panel:var(--ink-50);
+--surface-group:var(--iris-100);
+--surface-inverse:var(--ink-900);
+
+--border-rule:var(--ink-200);
+--border-control:var(--ink-300);
+--border-strong:var(--ink-400);
+--stroke-diagram-color:var(--ink-600);
+
+/* Meaning in diagrams: two opposed quantities + one "focus" hue */
+--positive-stroke:var(--coral-400);--positive-fill:var(--coral-200);--positive-tint:var(--coral-100);
+--negative-stroke:var(--sky-400);--negative-fill:var(--sky-200);--negative-tint:var(--sky-100);
+--focus-stroke:var(--iris-600);--focus-fill:var(--iris-200);--focus-tint:var(--iris-100);
+
+--interactive-hint:var(--amber-500);
+--interactive-halo:var(--amber-200);
+--focus-ring:var(--sky-500);
+--accent:var(--sky-600);
+
+--status-good:#2e8b6f;--status-warn:var(--amber-600);--status-bad:var(--coral-600);
+}

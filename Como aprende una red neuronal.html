@@ -1,0 +1,124 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cómo aprende una red neuronal · Clase 2</title>
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/tokens/colors.css">
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/tokens/typography.css">
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/tokens/motion.css">
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/tokens/base.css">
+<link rel="stylesheet" href="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/marginalia-design-system-e96b41e4-d9ae-45e1-9e04-1ac9fc0024df/_ds_bundle.js"></script>
+<script type="text/babel" src="figs-a.jsx"></script>
+<script type="text/babel" src="figs-b.jsx"></script>
+<script type="text/babel" src="figs-c.jsx"></script>
+<style>
+body{background:var(--paper);color:var(--text-body);font-size:var(--fs-body);line-height:var(--lh-body)}
+a{color:var(--text-link);text-decoration:underline;text-decoration-color:var(--ink-300);text-underline-offset:3px}a:hover{color:var(--text-link-hover);text-decoration-color:currentColor}
+p{margin:0 0 20px;text-wrap:pretty}
+.mg-section{max-width:var(--col-text);margin:0 auto;padding:0 24px}
+.mg-h2{font-size:var(--fs-h2);font-weight:700;color:var(--text-strong);margin:72px 0 14px;letter-spacing:var(--ls-heading);line-height:var(--lh-heading)}
+.fig-stack{display:flex;flex-direction:column;gap:16px;align-items:center;width:100%}
+.fig-controls{display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:center}
+.mono-note{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.aside{font-family:var(--font-serif);font-style:italic;font-size:var(--fs-annot);line-height:var(--lh-annot);color:var(--text-muted);margin:6px 0 0}
+.aside-inline{font-family:var(--font-serif);font-style:italic;font-size:var(--fs-small);color:var(--text-muted);text-align:center}
+.fig-status{margin:0;min-height:1.6em;font-size:var(--fs-annot);color:var(--text-strong);font-weight:600;text-align:center}
+.loss-grid,.optim-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:center;width:100%}
+.loss-side,.optim-side{display:flex;flex-direction:column;gap:20px}
+.optim-side{gap:12px}.optim-name{font-weight:700;font-size:var(--fs-h3);letter-spacing:var(--ls-heading)}
+.variants-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;width:100%}
+.summary{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:10px 24px;margin:8px 0 24px;padding-top:14px;border-top:1px solid var(--border-rule)}
+.summary dt{font-weight:700;color:var(--text-strong)}.summary dd{margin:0}
+@media (max-width:760px){.loss-grid,.optim-grid{grid-template-columns:minmax(0,1fr)}.summary{grid-template-columns:minmax(0,1fr)}.summary dd{margin-bottom:8px}}
+</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { ArticleHeader, Figure, Sidenote, Equation } = window.MarginaliaDesignSystem_e96b41;
+const E = ({ t }) => <Equation tex={t}></Equation>;
+function App() {
+  return (
+    <div>
+      <div style={{ padding: '88px 24px 24px' }}>
+        <ArticleHeader kicker="Aprendizaje profundo" title="Cómo aprende una red neuronal"
+          description="De una sola neurona a los optimizadores modernos: predecir, medir el error y corregir, paso a paso."></ArticleHeader>
+        <div style={{ maxWidth: 'var(--col-page)', margin: '28px auto 0', paddingTop: 14, borderTop: '1px solid var(--border-rule)', fontSize: 15, color: 'var(--text-muted)' }}>Septiembre 2026</div>
+      </div>
+
+      <Section>
+        <p>Una red neuronal aprende repitiendo tres acciones. Primero, hace una predicción. Luego, mide qué tan equivocada estuvo. Finalmente, ajusta sus parámetros para equivocarse un poco menos la próxima vez. En este artículo recorremos cada una, empezando por la pieza más pequeña: una neurona.</p>
+      </Section>
+
+      <Section title="La neurona artificial">
+        <p><Sidenote number={1}>Una neurona biológica tiene muchas entradas (dendritas), un cuerpo celular y una sola salida (el axón).</Sidenote>El <b>perceptrón</b> se inventó como un modelo computacional simple de una neurona. Recibe varias entradas <E t="x_i"></E>, multiplica cada una por un <b>peso</b> <E t="w_i"></E> y suma un <b>sesgo</b> <E t="b"></E>:</p>
+        <Equation display number={1} tex="z = \sum_i w_i x_i + b"></Equation>
+        <p>Después introducimos la no linealidad aplicando una <b>función de activación</b> (o de transferencia) <E t="f"></E>. La salida de la neurona es entonces:</p>
+        <Equation display number={2} tex="\hat y = f(z)"></Equation>
+      </Section>
+      <Figure number={1} width="page" caption="Una neurona con tres entradas. El grosor de cada conexión es la magnitud del peso; coral si es positivo, azul si es negativo. Mueve los pesos y observa cómo cambia la salida.">
+        <NeuronFigure></NeuronFigure>
+      </Figure>
+
+      <Section title="Adelante para predecir, atrás para aprender">
+        <p>La <b>propagación hacia adelante</b> (forward pass) es el proceso con el que la neurona transforma los datos de entrada en una predicción. Es la fase de "pensar": la información fluye en una sola dirección, de las entradas a la estimación final.</p>
+        <p>La <b>propagación hacia atrás</b> (backpropagation) es la fase de "aprender". Recorre el camino en sentido inverso para averiguar cuánto contribuyó cada peso y cada sesgo al error de la predicción. La herramienta es la regla de la cadena:</p>
+        <Equation display number={3} tex="\frac{\partial L}{\partial w} = \frac{\partial L}{\partial \hat y}\cdot\frac{\partial \hat y}{\partial z}\cdot\frac{\partial z}{\partial w}"></Equation>
+      </Section>
+      <Figure number={2} width="page" caption="Un ciclo completo de aprendizaje con una neurona sigmoide y un solo peso. Avanza paso a paso; después de cada actualización la pérdida baja.">
+        <PassesFigure></PassesFigure>
+      </Figure>
+
+      <Section title="Medir el error: la función de pérdida">
+        <p>Para saber si la red va bien definimos una <b>función de costo</b> <E t="J"></E>, también llamada <b>función de pérdida</b> <E t="L"></E>. Si la pérdida es alta, la red no está prediciendo la salida correcta. Nuestro objetivo es minimizarla, y como las predicciones salen de la propagación hacia adelante, lo que podemos cambiar son sus valores: los pesos y sesgos.</p>
+        <p>Qué pérdida usar depende del problema. Para predecir un valor escalar continuo usamos el <b>error cuadrático medio</b> (MSE) o el <b>error absoluto medio</b> (MAE). Cuando hay probabilidades de por medio, es decir, en clasificación, usamos siempre la <b>entropía cruzada</b>.</p>
+        <p><Sidenote number={2}>El MAPE es habitual en pronóstico de demanda para evaluar el modelo durante el entrenamiento.</Sidenote>Una variante útil es el <b>error porcentual absoluto medio</b>, que expresa el error relativo al valor real: <E t="\mathrm{MAPE}=\tfrac{100}{n}\sum_i \left|\tfrac{y_i-\hat y_i}{y_i}\right|"></E>.</p>
+      </Section>
+      <Figure number={3} width="page" caption="Cuánto castiga cada función de pérdida según el tamaño del error (regresión) o según la probabilidad asignada a la clase correcta (clasificación).">
+        <LossFigure></LossFigure>
+      </Figure>
+
+      <Section title="Descender por la pendiente">
+        <p>¿Cómo minimizamos la pérdida? El algoritmo más usado es el <b>descenso del gradiente</b>. Pensemos en alguien que baja una montaña con niebla: no ve el valle, pero siente la inclinación bajo sus pies y da un paso cuesta abajo. Luego vuelve a sentir la pendiente, y da otro paso.</p>
+        <p>Podemos dibujar la función de costo contra los pesos. Los pesos iniciales, elegidos al azar, son un punto sobre la curva. El <b>gradiente</b> <E t="\partial J/\partial w"></E> es la derivada en ese punto, es decir, la pendiente de la recta tangente. Como solo usa la primera derivada, el descenso del gradiente es un método de optimización de primer orden. Movemos el peso en sentido contrario a la pendiente con la regla de actualización:</p>
+        <Equation display number={4} tex="w \leftarrow w - \alpha\,\frac{\partial J}{\partial w}"></Equation>
+        <p>La <b>tasa de aprendizaje</b> <E t="\alpha"></E> decide el tamaño del paso. Si es grande, el descenso es rápido pero puede pasarse del mínimo o no asentarse nunca. Si es pequeña, avanza con seguridad pero puede quedarse atrapado en un mínimo local. Por eso hay que elegirla con cuidado.</p>
+      </Section>
+      <Figure number={4} width="page" caption="Descenso del gradiente sobre una función de costo con un mínimo local y uno global. El mismo punto de partida llega a lugares distintos según α.">
+        <DescentFigure></DescentFigure>
+      </Figure>
+      <Section>
+        <p>Todo este proceso, propagar el error desde la capa de salida hasta la de entrada y actualizar los pesos con descenso del gradiente para minimizar la pérdida, es lo que llamamos <b>backpropagation</b>.</p>
+      </Section>
+
+      <Section title="Mejores formas de bajar">
+        <p>El descenso simple tiene problemas conocidos. En un valle estrecho y alargado rebota entre las paredes, y usa la misma tasa para todos los pesos. Los optimizadores modernos resuelven esto con dos ideas. La primera es la <b>inercia</b>: recordar la dirección de los pasos anteriores (Momentum, Nesterov). La segunda es la <b>tasa adaptativa</b>: dar a cada peso su propio tamaño de paso según la historia de sus gradientes (Adagrad, RMSProp). Adam combina ambas.</p>
+      </Section>
+      <Figure number={5} width="page" caption="Seis optimizadores que parten del mismo punto sobre un valle alargado. Las elipses son curvas de nivel del costo. Elige uno para resaltarlo.">
+        <OptimizerFigure></OptimizerFigure>
+      </Figure>
+
+      <Section title="¿Cuántos datos por paso?">
+        <p>Falta decidir con cuántos ejemplos calculamos el gradiente en cada actualización. El descenso <b>por lotes</b> usa todo el conjunto de datos: cada paso es preciso pero caro. El descenso <b>estocástico</b> usa un solo ejemplo: los pasos son baratos y ruidosos. Los <b>mini-lotes</b> están en medio y son la opción habitual en aprendizaje profundo.</p>
+      </Section>
+      <Figure number={6} width="page" caption="Curvas de pérdida típicas de cada variante. Más ruido por paso, pero muchos más pasos por época.">
+        <VariantsFigure></VariantsFigure>
+      </Figure>
+
+      <Section title="Resumen">
+        <p>Los elementos del descenso del gradiente, en una sola vista:</p>
+        <dl className="summary">
+          <dt>Parámetros</dt><dd>Los pesos <E t="w"></E> y sesgos <E t="b"></E> que la red ajusta.</dd>
+          <dt>Función de costo</dt><dd>MSE, MAE, MAPE o entropía cruzada, según el problema.</dd>
+          <dt>Gradiente</dt><dd>La pendiente del costo respecto a cada parámetro, calculada con backpropagation.</dd>
+          <dt>Tasa de aprendizaje</dt><dd>El tamaño de cada paso, <E t="\alpha"></E>.</dd>
+          <dt>Optimizador</dt><dd>La regla que convierte el gradiente en un paso: SGD, Momentum, NAG, Adagrad, RMSProp o Adam.</dd>
+          <dt>Tamaño de lote</dt><dd>Cuántos ejemplos se usan por actualización.</dd>
+        </dl>
+      </Section>
+      <div style={{ height: 120 }}></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

@@ -1,0 +1,25 @@
+:root{
+--space-0:2px;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;--space-10:128px;
+
+/* Distill-style column grid */
+--col-text:680px;   /* body copy */
+--col-page:960px;   /* figures wider than text */
+--col-gutter:220px; /* sidenotes / margin annotations */
+--col-gap:32px;
+--col-screen:1440px;
+
+/* Radii */
+--radius-xs:3px;   /* inner value fills */
+--radius-sm:4px;   /* controls */
+--radius-md:6px;   /* diagram boxes, cells */
+--radius-lg:10px;  /* grouping panels */
+--radius-pill:999px;
+
+/* Strokes */
+--stroke-hair:1px;--stroke-diagram:1.5px;--stroke-strong:2px;
+
+/* Elevation — nearly flat */
+--shadow-none:none;
+--shadow-diagram:1px 2px 0 rgba(0,0,0,.10);
+--shadow-pop:0 1px 2px rgba(0,0,0,.06),0 6px 20px rgba(0,0,0,.08);
+}
